@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Camera, Utensils, Lightbulb } from 'lucide-react';
+import { MapPin, Camera, Utensils, Lightbulb, PlayCircle } from 'lucide-react';
 
 interface City {
   name: string;
@@ -7,6 +7,7 @@ interface City {
   top_attractions: { name: string; desc: string }[];
   local_food: string[];
   travel_tip: string;
+  video_id: string;
 }
 
 interface CityCardProps {
@@ -16,10 +17,30 @@ interface CityCardProps {
 export default function CityCard({ city }: CityCardProps) {
   return (
     <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 shadow-xl flex flex-col h-full">
-      <div className="h-48 bg-gradient-to-r from-teal-600 to-emerald-600 flex items-center justify-center relative overflow-hidden group shrink-0">
-        <span className="text-3xl font-bold text-white z-10 drop-shadow-lg">{city.name}</span>
-        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+      <div className="h-48 bg-black relative group shrink-0 overflow-hidden">
+        {/* Video Background (or thumbnail) - using YouTube embed for preview */}
+        <iframe
+          src={`https://www.youtube.com/embed/${city.video_id}?autoplay=0&mute=1&controls=0&showinfo=0&rel=0&loop=1`}
+          title={city.name}
+          className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500 pointer-events-none"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
+        
+        <div className="absolute bottom-4 left-6 right-6 flex justify-between items-end z-10">
+            <span className="text-3xl font-bold text-white drop-shadow-md">{city.name}</span>
+            <a 
+              href={`https://www.youtube.com/watch?v=${city.video_id}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-2 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full text-white transition-all transform hover:scale-110"
+              title="Watch full video"
+            >
+                <PlayCircle size={24} className="fill-current" />
+            </a>
+        </div>
       </div>
+
       <div className="p-6 space-y-5 flex-1 flex flex-col">
         <p className="text-gray-300 leading-relaxed text-sm min-h-[60px]">{city.description}</p>
         
